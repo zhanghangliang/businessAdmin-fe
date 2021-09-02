@@ -40,5 +40,5 @@ npm run lint -- --fix
 npm run build:prod
 npm i -g http-server
 cd ./dist
-http-server
+http-server --port 11090
 ```
