@@ -148,7 +148,7 @@ export default {
   },
   created() {
     let ua = window.navigator.userAgent.toLowerCase();
-    if (ua.match(/MicroMessenger/i) == "micromessenger" || true) {
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
       this.getHotList();
       this.getMatterType();
       this.member = JSON.parse(Cookies.get("member" + this.systemType));
