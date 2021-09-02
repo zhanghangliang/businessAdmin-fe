@@ -35,3 +35,8 @@ npm run lint
 npm run lint -- --fix
 ```
 
+## Run
+npm run build:prod
+npm i -g http-server
+cd ./dist
+http-server
