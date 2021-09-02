@@ -23,6 +23,10 @@ function onRrefreshed (token) {
 // request interceptor
 service.interceptors.request.use(
   config => {
+    // ------------  修改为 form-data形式  ------------
+    config.headers["common"]["Content-Type"] = "multipart/form-data"
+    console.log("%c [统一修改请求]",'color:red', config);
+    // -----------------------------------------------
     // do something before request is sent
     if (store.getters.token) { // 已登录，有token
       config.headers['token'] = getToken()

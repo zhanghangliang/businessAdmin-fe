@@ -26,10 +26,13 @@ export function postAction (url, parameter) {
 
 // post method= {post | put}
 export function httpAction (url, parameter, method) {
+  var formData = new FormData();
+  formData.append("data",JSON.stringify(parameter));
+  formData.append("url",url);
   return request({
-    url: url,
+    url: "",
     method: method || 'post',
-    data: parameter
+    data: formData
   })
 }
 
