@@ -9,10 +9,13 @@ const api = {
 
 export default api
 export function dict (parameter) {
+  let formData = new FormData();
+  formData.append("data",JSON.stringify({ 'body': parameter }));
+  formData.append("url","/dictManager/findDictItemByDictCode");
   return request({
     url: '/dictManager/findDictItemByDictCode',
     method: 'post',
-    data: { 'body': parameter }
+    data: formData
   })
 }
 // post
@@ -26,11 +29,11 @@ export function postAction (url, parameter) {
 
 // post method= {post | put}
 export function httpAction (url, parameter, method) {
-  var formData = new FormData();
+  let formData = new FormData();
   formData.append("data",JSON.stringify(parameter));
   formData.append("url",url);
   return request({
-    url: "",
+    url: url,
     method: method || 'post',
     data: formData
   })
@@ -47,19 +50,29 @@ export function putAction (url, parameter) {
 
 // get
 export function getAction (url, parameter) {
+  let params = Object.keys(parameter).map(function (key) {
+    return encodeURIComponent(key) + "=" + encodeURIComponent(parameter[key]);
+  }).join("&");
+  let formData = new FormData();
+  formData.append("url",url+"?"+params);
   return request({
     url: url,
     method: 'get',
-    params: parameter
+    data: formData
   })
 }
 
 // deleteAction
 export function deleteAction (url, parameter) {
+  let params = Object.keys(parameter).map(function (key) {
+    return encodeURIComponent(key) + "=" + encodeURIComponent(parameter[key]);
+  }).join("&");
+  let formData = new FormData();
+  formData.append("url",url+"?"+params);
   return request({
     url: url,
     method: 'delete',
-    params: parameter
+    data: formData
   })
 }
 
@@ -72,10 +85,15 @@ export function getUserList (parameter) {
 }
 
 export function getRoleList (parameter) {
+  let params = Object.keys(parameter).map(function (key) {
+    return encodeURIComponent(key) + "=" + encodeURIComponent(parameter[key]);
+  }).join("&");
+  let formData = new FormData();
+  formData.append("url",api.role+"?"+params);
   return request({
     url: api.role,
     method: 'get',
-    params: parameter
+    data: formData
   })
 }
 
@@ -98,15 +116,18 @@ export function getPermissions (parameter) {
 // id == 0 add     post
 // id != 0 update  put
 export function saveService (parameter) {
+  let formData = new FormData();
+  formData.append("data",JSON.stringify(parameter));
+  formData.append("url",api.service);
   return request({
     url: api.service,
     method: parameter.id == 0 ? 'post' : 'put',
-    data: parameter
+    data: formData
   })
 }
 
 /**
- * 下载文件 用于excel导出
+ * TODO 下载文件 用于excel导出
  * @param url
  * @param parameter
  * @returns {*}

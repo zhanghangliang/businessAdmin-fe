@@ -6,7 +6,7 @@ import { datetime, compareTime, compareDifferTime } from '@/utils'
 import { httpAction } from '@/api/manage'
 // create an axios instance
 const service = axios.create({
-  baseURL: window._CONFIG['apiUrl']
+  baseURL: process.env.VUE_APP_SERVER_IP + window._CONFIG['apiUrl']
 })
 window.isRefreshing = false
 /* 被挂起的请求数组*/
@@ -25,6 +25,7 @@ service.interceptors.request.use(
   config => {
     // ------------  修改为 form-data形式  ------------
     config.headers["common"]["Content-Type"] = "multipart/form-data"
+    config.url = ""
     console.log("%c [统一修改请求]",'color:red', config);
     // -----------------------------------------------
     // do something before request is sent
