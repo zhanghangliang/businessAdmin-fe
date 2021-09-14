@@ -3,7 +3,7 @@
         <div class="all">
             <ul class="form-list">
                 <li>
-                    <img src="../../assets/images/icon_arrowL.png" alt="" @click="backPage">
+                    <img src="../../assets/images/icon_arrowL.png" alt="" v-if="!mobileAdd_edit" @click="backPage">
                     <span>个人基础信息</span>
                 </li>
                 <li>
@@ -55,9 +55,9 @@
         </div>
         <!-- 修改手机号 -->
         <div class="mobile-popup">
-            <div class="popup-bg" @click="popupShow=!popupShow" v-if="popupShow"></div>
+            <div class="popup-bg" v-if="popupShow"></div>
             <div class="mobile-popup-con" v-if="popupShow">
-                <p class="popup-title">{{mobileAdd_edit?'确认新手机号':'修改手机号'}}</p>
+                <p class="popup-title">{{mobileAdd_edit?'登录或注册':'修改手机号'}}</p>
                 <div class="popup-div">
                     <input v-if='mobileAdd_edit' type="number" placeholder="请输入手机号码" class="other" v-model="setMobile" oninput="value=value.replace(/[^\d-]/g,'')">
                     <div v-else class="popup-show-mobile">{{formatData(setMobile)}}</div>
@@ -67,8 +67,9 @@
                     <input type="text" placeholder="请输入验证码" v-model="setCode">
                 </div>
                 <div class="popup-div-btn">
+                    <span v-if="mobileAdd_edit" @click="loginByPhone">登录已有账户</span>
                     <span v-if="!mobileAdd_edit" @click="editNext">下一步</span>
-                    <span v-if="mobileAdd_edit" @click="confirmMobile">确定</span>
+                    <span v-if="mobileAdd_edit" @click="confirmMobile">注册</span>
                 </div>
             </div>
         </div>
@@ -115,7 +116,8 @@
 <script>
 import {httpAction} from '@/api/manage'
 import Cookies from 'js-cookie'
-
+import {setToken} from "@/utils/auth";
+import store from '@/store'
 
 
 export default {
@@ -153,7 +155,7 @@ export default {
         toastItem:null,
 
         editEnabled: true,
-        
+
         realName: '',
         idCard: ''
     }
@@ -232,7 +234,7 @@ export default {
                  type: response.msg == 'success' ? 'success' : 'warning',
                  message: '保存'+ (response.msg == 'success' ? '成功' : '失败')
               });
-            this.$store.dispatch('user/getInfo').then(()=>{})
+              this.$router.replace({ path: '/index', query: '' || {} });
             }
            this.clearToast()
         }).catch(error => {
@@ -340,6 +342,43 @@ export default {
             this.clearToast()
             console.log(error)
         })
+    },
+    loginByPhone() {
+      console.log(this.setMobile=='')
+      console.log(this.setCode=='')
+      if(this.setMobile==''||this.setCode==''){
+        this.Toast('请输入手机号和验证码')
+        return
+      }
+      let temp = {
+        mobile:this.setMobile,
+        code:this.setCode
+      }
+      console.log(temp)
+      this.showToast()
+      httpAction('/Wx/loginCheckcode', {body:temp}).then(response => {
+        this.clearToast()
+        if (response.code == 0) {
+          if(response.data.checkstate == 1){ //成功
+            setToken(response.data.token);
+            store.dispatch('user/setToken', response.data.token)
+            this.Notify({
+              type: 'success',
+              message: '登录成功, 即将跳转'
+            });
+            this.timer = setTimeout(()=>{   //设置延迟执行
+              this.$router.replace({ path: '/my', query: {token: response.data.token} || {} });
+            },2000);
+          }else if(response.data.checkstate == 0){  //失败
+            this.Toast('验证码有误')
+          }else if(response.data.checkstate == -1){  //失败
+            this.Toast('此手机未注册, 请点击确定开始注册')
+          }
+        }
+      }).catch(error => {
+        this.clearToast()
+        console.log(error)
+      })
     },
     //发送验证码
     sendCode(){
@@ -478,7 +517,7 @@ export default {
     line-height: 40px;
     outline: none;
     border-style: none;
-   
+
 
 }
 .inp-style-4{
@@ -488,7 +527,7 @@ export default {
     font-size: 16px;
     outline: none;
     border-style: none;
- 
+
 
 }
 .form-list li > p{

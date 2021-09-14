@@ -19,11 +19,23 @@ export default {
       this.redirectPath = this.$route.query.redirect;
     }
 
-    const hasToken = getToken();
-    if (hasToken) {
-      this.getUserInfo();
+    let ua = window.navigator.userAgent.toLowerCase();
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+      console.log('微信浏览器');
+      const hasToken = getToken();
+      if (hasToken) {
+        this.getUserInfo();
+      } else {
+        this.getAuthUrl();
+      }
     } else {
-      this.getAuthUrl();
+      const hasToken = getToken();
+      console.log("不是微信浏览器"+getToken());
+      if (hasToken) {
+        this.getUserInfo();
+      } else {
+        this.$router.replace({ path: '/baseInfo', query: { checkMobile: true } })
+      }
     }
   },
   watch: {

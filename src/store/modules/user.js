@@ -222,7 +222,16 @@ const actions = {
       })
     })
   },
-
+  // set token
+  setToken({
+    commit,
+    dispatch
+  }, token) {
+    return new Promise(resolve => {
+    commit('SET_TOKEN', token)
+    resolve()
+    })
+  },
   // remove token
   resetToken({
     commit,

@@ -66,7 +66,7 @@
   height: 100vh;
   background-color: #333;
   top: 0;
-  opacity: 0.5;
+  opacity: 0.9;
   z-index: 10;
 }
 .mobile-popup-con{
@@ -156,12 +156,12 @@ to {
   display: inline-block;
 }
 
-.con-list .el-table--group::after, 
-.con-list .el-table--border::after, 
+.con-list .el-table--group::after,
+.con-list .el-table--border::after,
 .con-list .el-table::before {
   background-color: transparent;
 }
-.con-list .el-table--group, 
+.con-list .el-table--group,
 .con-list .el-table--border {
   border: 1px solid #000;
   border-right: none;
@@ -169,20 +169,20 @@ to {
   border-left: none;
 }
 .con-list li .el-table th.is-leaf,
-.con-list .el-table--border th, 
+.con-list .el-table--border th,
 .con-list .el-table--border td {
   border-right: 1px solid #000;
 }
 
-.con-list li .el-table th.is-leaf:first-child, 
-.con-list .el-table th.is-leaf:first-child, 
+.con-list li .el-table th.is-leaf:first-child,
+.con-list .el-table th.is-leaf:first-child,
 .con-list .el-table tr td:first-child {
   border-left: 1px solid #000;
 }
 
 
 .con-list li .el-table th.is-leaf,
-.con-list .el-table th.is-leaf, 
+.con-list .el-table th.is-leaf,
 .con-list .el-table td {
   border-bottom: 1px solid #000;
 }
