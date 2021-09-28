@@ -24,7 +24,7 @@ export default {
   },
   data () {
     return {
-        imgView:window._CONFIG['apiUrl'],
+        imgView:window._CONFIG['uploadUrl'],
         imgPath:window._CONFIG['download'],
         excelView: window._CONFIG['excelView'],
         is_weixin:true,
@@ -42,7 +42,7 @@ export default {
       this.downUrl = this.excelView + '?id=' + this.filesData.id + '&token='+ this.curToken
     }
 
-    this.is_weixin = this.isWeixin();
+    // this.is_weixin = this.isWeixin();
 
   },
   methods: {

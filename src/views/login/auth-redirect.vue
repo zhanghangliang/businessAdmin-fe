@@ -34,7 +34,8 @@ export default {
       if (hasToken) {
         this.getUserInfo();
       } else {
-        this.$router.replace({ path: '/baseInfo', query: { checkMobile: true } })
+        // 在这里开发平台对接代码
+        // this.$router.replace({ path: '/baseInfo', query: { checkMobile: true } })
       }
     }
   },

@@ -30,6 +30,10 @@ export function postAction (url, parameter) {
 // post method= {post | put}
 export function httpAction (url, parameter, method) {
   let formData = new FormData();
+  if(url== "/file/upload") {
+    formData.append("files", parameter.get("files"));
+    parameter.delete("files")
+  }
   formData.append("data",JSON.stringify(parameter));
   formData.append("url",url);
   return request({
